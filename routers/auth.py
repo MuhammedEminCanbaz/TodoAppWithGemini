@@ -76,7 +76,7 @@ async def get_current_user(token:Annotated[str,Depends(oauth2bearer)]):
         user_role = payload.get("role")
         if username is None or user_id is None:
             raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="username or ID is invalid")
-        return {"username":username,"ID":user_id,"user_role":user_role}
+        return {"username":username,"id":user_id,"user_role":user_role}
     except JWTError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="token is invalid")
 
@@ -102,4 +102,4 @@ async def login_for_access_token(form_data: Annotated[OAuth2PasswordRequestForm,
     if not user:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED,detail="incorrect username or pasword")
     token = create_acces_token(user.username,user.id,user.role,timedelta(minutes=60))
-    return {"acces token":token,"token type":"bearer"}
+    return {"access_token":token,"token_type":"bearer"}
