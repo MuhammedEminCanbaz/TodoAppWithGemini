@@ -1,5 +1,5 @@
 from passlib.context import CryptContext
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 
 # farklı işlemleri farklı yerlerde yapmak için apiden sürekli farklı instance'lar oluşturmak yerine
 # router yapısı kullanılır, farklı dağılımlar yapmış oluruz.
@@ -13,12 +13,15 @@ from models import User
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer #kullanıcıdan username ve pasword almak
 from jose import jwt,JWTError # jwt ile token oluşturmak için kullanıldı
 from datetime import timedelta, datetime, timezone
+from fastapi.templating import Jinja2Templates
 
 # router vasıtası ile api'den bir yol çıkarmış oluyoruz.
 router = APIRouter(
     prefix="/auth", # path başına isim ekler
     tags=["Authentication"], # tag olarak belirtir
 )
+#template klasörünü tanıtmak için yazdık
+templates = Jinja2Templates(directory="templates")
 
 SECRET_KEY = "psjqywıel123udkcmxn7803u4tx7bn19psjqywıel123udkcmxn7803u4tx7bn19"
 ALGORITHM = "HS256"
@@ -80,6 +83,15 @@ async def get_current_user(token:Annotated[str,Depends(oauth2bearer)]):
         return {"username":username,"id":user_id,"user_role":user_role}
     except JWTError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="token is invalid")
+
+@router.get("/login-page")
+def render_login_page(request:Request):
+    return templates.TemplateResponse("login.html",{"request":request})
+
+@router.get("/register-page")
+def render_register_page(request:Request):
+    return templates.TemplateResponse("register.html",{"request":request})
+
 
 @router.post("/",status_code=status.HTTP_201_CREATED)
 async def create_user(db:db_dependency, create_user_request : CreateUserRequest): # oluşturduğumuz temeli depends olarak alıyoruz.

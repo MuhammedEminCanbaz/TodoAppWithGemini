@@ -1,3 +1,5 @@
+from pickle import FALSE
+
 from database import Base
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
 
@@ -9,7 +11,7 @@ class Todo(Base):
     title = Column(String)
     description = Column(String)
     priority = Column(Integer)
-    completed = Column(Boolean,default=False)
+    complete = Column(Boolean,default=False)
     owner_id = Column(Integer,ForeignKey('users.id')) # users adlı tablodaki id değerinden oluşuyor bu kolon
 
 # iki tablo arasında bir ilişki kurmalıyız, kimin todosu kimin diye bakmamız gerekecek
