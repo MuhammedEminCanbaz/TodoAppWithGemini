@@ -2,11 +2,11 @@ from fastapi import APIRouter, Depends, Path, HTTPException, Request
 from pydantic import BaseModel, Field
 from starlette import status
 from starlette.responses import RedirectResponse
-from models import Base, Todo
+from ..models import Base, Todo
 from sqlalchemy.orm import Session
-from database import engine, SessionLocal
+from ..database import engine, SessionLocal
 from typing import Annotated
-from routers.auth import get_current_user
+from ..routers.auth import get_current_user
 from fastapi.templating import Jinja2Templates
 # yapay zeka için gerekli importlar
 from dotenv import load_dotenv
@@ -26,7 +26,7 @@ router = APIRouter(
     tags=["todo"], # isim olarak belirtir
 )
 
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory="app/templates")
 
 #bir request sınıfı oluşturmamız gerekiyor body olarak post için
 class TodoRequest(BaseModel):

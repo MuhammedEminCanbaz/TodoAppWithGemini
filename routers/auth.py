@@ -8,8 +8,8 @@ from pydantic import BaseModel
 from typing import Annotated
 from starlette import status
 from sqlalchemy.orm import Session
-from database import SessionLocal
-from models import User
+from ..database import SessionLocal
+from ..models import User
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer #kullanıcıdan username ve pasword almak
 from jose import jwt,JWTError # jwt ile token oluşturmak için kullanıldı
 from datetime import timedelta, datetime, timezone
@@ -21,7 +21,7 @@ router = APIRouter(
     tags=["Authentication"], # tag olarak belirtir
 )
 #template klasörünü tanıtmak için yazdık
-templates = Jinja2Templates(directory="templates")
+templates = Jinja2Templates(directory="app/templates")
 
 SECRET_KEY = "psjqywıel123udkcmxn7803u4tx7bn19psjqywıel123udkcmxn7803u4tx7bn19"
 ALGORITHM = "HS256"
